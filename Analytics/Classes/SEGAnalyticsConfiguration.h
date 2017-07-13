@@ -7,16 +7,35 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#if TARGET_OS_OSX
+#import <AppKit/AppKit.h>
+#else
 #import <UIKit/UIKit.h>
+#endif
 
 @protocol SEGApplicationProtocol <NSObject>
+#if !TARGET_OS_OSX
+
 @property (nullable, nonatomic, assign) id<UIApplicationDelegate> delegate;
 - (UIBackgroundTaskIdentifier)beginBackgroundTaskWithName:(nullable NSString *)taskName expirationHandler:(void(^ __nullable)(void))handler;
 - (void)endBackgroundTask:(UIBackgroundTaskIdentifier)identifier;
+
+#endif
+
 @end
+
+#if TARGET_OS_OSX
+
+@interface NSApplication ()<SEGApplicationProtocol>
+@end
+
+#else
 
 @interface UIApplication ()<SEGApplicationProtocol>
 @end
+
+#endif
 
 typedef NSMutableURLRequest * _Nonnull(^SEGRequestFactory)(NSURL * _Nonnull);
 

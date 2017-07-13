@@ -1,3 +1,6 @@
+#import <Foundation/Foundation.h>
+#if !TARGET_OS_OSX
+
 #import "UIViewController+SEGScreen.h"
 #import <objc/runtime.h>
 #import "SEGAnalytics.h"
@@ -80,3 +83,5 @@
 }
 
 @end
+
+#endif

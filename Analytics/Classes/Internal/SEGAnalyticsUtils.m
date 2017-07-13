@@ -1,5 +1,8 @@
 #import "SEGAnalyticsUtils.h"
+
+#if !TARGET_OS_OSX
 #import <AdSupport/ASIdentifierManager.h>
+#endif
 
 static BOOL kAnalyticsLoggerShowLogs = NO;
 

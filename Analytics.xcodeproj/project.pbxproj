@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1DB456AB1F17DFD5004B6E23 /* GetPrimaryMACAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1DB456AA1F17DFD5004B6E23 /* GetPrimaryMACAddress.c */; };
 		3481C14AEC76E5A8DA64DA59 /* Pods_AnalyticsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89033CBF22319674E6CE7E61 /* Pods_AnalyticsTests.framework */; };
 		EA88A5981DED7608009FB66A /* SEGSerializableValue.h in Headers */ = {isa = PBXBuildFile; fileRef = EA88A5971DED7608009FB66A /* SEGSerializableValue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EA8F09741E24C5C600B8B93F /* MiddlewareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8F09731E24C5C600B8B93F /* MiddlewareTests.swift */; };
@@ -86,6 +87,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1DB456AA1F17DFD5004B6E23 /* GetPrimaryMACAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = GetPrimaryMACAddress.c; sourceTree = "<group>"; };
+		1DB456AC1F17E1C6004B6E23 /* GetPrimaryMACAddress.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetPrimaryMACAddress.h; sourceTree = "<group>"; };
 		1DF03A6929EEFE7158913224 /* Pods-AnalyticsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnalyticsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AnalyticsTests/Pods-AnalyticsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		89033CBF22319674E6CE7E61 /* Pods_AnalyticsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AnalyticsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3BF8AE673FE0FD91DF5B503 /* Pods-AnalyticsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AnalyticsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AnalyticsTests/Pods-AnalyticsTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -340,6 +343,8 @@
 				EADEB8A11DECD12B005322DA /* SEGUtils.m */,
 				EADEB8A21DECD12B005322DA /* UIViewController+SEGScreen.h */,
 				EADEB8A31DECD12B005322DA /* UIViewController+SEGScreen.m */,
+				1DB456AA1F17DFD5004B6E23 /* GetPrimaryMACAddress.c */,
+				1DB456AC1F17E1C6004B6E23 /* GetPrimaryMACAddress.h */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
@@ -574,6 +579,7 @@
 				EADEB8CC1DECD12B005322DA /* SEGSegmentIntegration.m in Sources */,
 				EADEB8B21DECD12B005322DA /* SEGAliasPayload.m in Sources */,
 				EADEB8BA1DECD12B005322DA /* SEGIntegrationsManager.m in Sources */,
+				1DB456AB1F17DFD5004B6E23 /* GetPrimaryMACAddress.c in Sources */,
 				EADEB8C41DECD12B005322DA /* SEGAnalyticsUtils.m in Sources */,
 				EADEB8C61DECD12B005322DA /* SEGFileStorage.m in Sources */,
 				EADEB8D31DECD12B005322DA /* SEGUserDefaultsStorage.m in Sources */,
@@ -731,11 +737,12 @@
 				INFOPLIST_FILE = Analytics/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.Analytics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator macosx";
 				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
@@ -753,11 +760,12 @@
 				INFOPLIST_FILE = Analytics/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.segment.Analytics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvos appletvsimulator macosx";
 				TARGETED_DEVICE_FAMILY = "1,2,3";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};

@@ -1,5 +1,4 @@
 #import <objc/runtime.h>
-#import <UIKit/UIKit.h>
 #import "SEGAnalyticsUtils.h"
 #import "SEGAnalytics.h"
 #import "SEGIntegrationFactory.h"
@@ -60,24 +59,34 @@ static SEGAnalytics *__sharedInstance = nil;
         // Pass through for application state change events
         id<SEGApplicationProtocol> application = configuration.application;
         if (application) {
-            for (NSString *name in @[ UIApplicationDidEnterBackgroundNotification,
-                                      UIApplicationDidFinishLaunchingNotification,
-                                      UIApplicationWillEnterForegroundNotification,
-                                      UIApplicationWillTerminateNotification,
-                                      UIApplicationWillResignActiveNotification,
-                                      UIApplicationDidBecomeActiveNotification ]) {
+#if TARGET_OS_OSX
+            NSArray *notificationNames = @[ NSApplicationDidFinishLaunchingNotification,
+                                            NSApplicationWillTerminateNotification,
+                                            NSApplicationWillResignActiveNotification,
+                                            NSApplicationDidBecomeActiveNotification ];
+#else
+            NSArray *notificationNames = @[ UIApplicationDidFinishLaunchingNotification,
+                                            UIApplicationWillTerminateNotification,
+                                            UIApplicationWillResignActiveNotification,
+                                            UIApplicationDidBecomeActiveNotification,
+                                            UIApplicationDidEnterBackgroundNotification,
+                                            UIApplicationWillEnterForegroundNotification ];
+#endif
+            for (NSString *name in notificationNames) {
                 [nc addObserver:self selector:@selector(handleAppStateNotification:) name:name object:application];
             }
         }
 
+#if !TARGET_OS_OSX
         if (configuration.recordScreenViews) {
             [UIViewController seg_swizzleViewDidAppear];
         }
+#endif
         if (configuration.trackInAppPurchases) {
             _storeKitTracker = [SEGStoreKitTracker trackTransactionsForAnalytics:self];
         }
 
-#if !TARGET_OS_TV
+#if !TARGET_OS_TV && !TARGET_OS_OSX
         if (configuration.trackPushNotifications && configuration.launchOptions) {
             NSDictionary *remoteNotification = configuration.launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
             if (remoteNotification) {
@@ -106,10 +115,20 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
     payload.notificationName = note.name;
     [self run:SEGEventTypeApplicationLifecycle payload:payload];
 
-    if ([note.name isEqualToString:UIApplicationDidFinishLaunchingNotification]) {
+#if TARGET_OS_OSX
+#define ApplicationDidFinishLaunchingNotification NSApplicationDidFinishLaunchingNotification
+#else
+#define ApplicationDidFinishLaunchingNotification UIApplicationDidFinishLaunchingNotification
+#endif
+    
+    if ([note.name isEqualToString:ApplicationDidFinishLaunchingNotification]) {
         [self _applicationDidFinishLaunchingWithOptions:note.userInfo];
-    } else if ([note.name isEqualToString:UIApplicationWillEnterForegroundNotification]) {
-        [self _applicationWillEnterForeground];
+    } else {
+#if !TARGET_OS_OSX
+        if ([note.name isEqualToString:UIApplicationWillEnterForegroundNotification]) {
+            [self _applicationWillEnterForeground];
+        }
+#endif
     }
 }
 
@@ -145,13 +164,17 @@ NSString *const SEGBuildKeyV2 = @"SEGBuildKeyV2";
         }];
     }
 
-    [self track:@"Application Opened" properties:@{
-        @"from_background": @NO,
-        @"version" : currentVersion ?: [NSNull null],
-        @"build" : currentBuild ?: [NSNull null],
-        @"referring_application": launchOptions[UIApplicationLaunchOptionsSourceApplicationKey] ?: [NSNull null],
-        @"url": launchOptions[UIApplicationLaunchOptionsURLKey] ?: [NSNull null],
-    }];
+    NSMutableDictionary *properties = @{
+                                 @"from_background": @NO,
+                                 @"version" : currentVersion ?: [NSNull null],
+                                 @"build" : currentBuild ?: [NSNull null],
+                                 }.mutableCopy;
+#if !TARGET_OS_OSX
+    properties[@"referring_application"] = launchOptions[UIApplicationLaunchOptionsSourceApplicationKey] ?: [NSNull null];
+    properties[@"url"] = launchOptions[UIApplicationLaunchOptionsURLKey] ?: [NSNull null];
+#endif
+    
+    [self track:@"Application Opened" properties:properties];
 
 
     [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SEGVersionKey];
